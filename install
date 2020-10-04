@@ -1,0 +1,32 @@
+<?php
+
+require __DIR__.'/bootstrap/app.php';
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+Capsule::schema()->create('properties', function ($table) {
+    $table->increments('id');
+    $table->string('uuid');
+    $table->string('county');
+    $table->string('town');
+    $table->text('description');
+    $table->text('displayable_address');
+    $table->string('image_url');
+    $table->string('thumbnail_url');
+    $table->string('latitude');
+    $table->string('longitude');
+    $table->integer('number_of_bedrooms');
+    $table->integer('number_of__bathrooms');
+    $table->unsignedInteger('price');
+    $table->unsignedInteger('property_type_id');
+    $table->boolean('selling');
+    $table->timestamps();
+});
+
+Capsule::schema()->create('property_types', function ($table) {
+    $table->unsignedInteger('id')->unique();
+    $table->string('title');
+    $table->text('description');
+    $table->timestamps();
+});
+

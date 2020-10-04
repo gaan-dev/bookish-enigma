@@ -1,0 +1,12 @@
+<?php
+
+require __DIR__.'/bootstrap/app.php';
+
+use App\Models\Property;
+use App\Models\PropertyType;
+
+// Maybe we can do something cool with Guzzle and the CLI, where we only process a certain number of pages? Just to reduce load on API.
+
+// We also want ot bring in .env file
+
+die($_ENV['API_KEY']);
