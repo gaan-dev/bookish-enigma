@@ -7,7 +7,7 @@ $router->get('/', function(){
 	$filters = collect($_GET)->only(['name', 'bedrooms', 'price', 'property_type', 'type'])->toArray();
 
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
-	$limit = isset($_GET['limit']) ? $_GET['limit'] : 2;
+	$limit = isset($_GET['limit']) ? $_GET['limit'] : 15;
 	$prev = '?page=' . ($page - 1);
 	$next = '?page=' . ($page + 1);
 
@@ -31,7 +31,14 @@ $router->get('/', function(){
 				break;
 		}
 	}
-	$properties = $query->limit($limit)->offset(($page - 1) * $limit)->get();
+	$properties = $query->limit($limit + 1)->offset(($page - 1) * $limit)->get();
+
+	$has_prev = ($page - 1) > 0;
+	$has_next = count($properties) > $limit;
+
+	if($has_next){
+		$properties = $properties->slice(0, -1);
+	}
 
 	$property_types = PropertyType::all();
 	$token = $_SESSION['token'];
