@@ -10,16 +10,22 @@ use App\Models\Api;
 $api = new Api();
 
 $i = 0;
+$property_types = [];
 while($api->nextPageExists()){
 	foreach($api->next()->results() as $result){
 		$result = collect($result);
-		PropertyType::updateOrCreate(
-			['id' => $result['property_type']['id']],
-			[
-				'title' => $result['property_type']['title'],
-				'description' => $result['property_type']['description']
-			]
-		);
+
+		if(!in_array($result['property_type']['id'], $property_types)){
+			PropertyType::updateOrCreate(
+				['id' => $result['property_type']['id']],
+				[
+					'title' => $result['property_type']['title'],
+					'description' => $result['property_type']['description']
+				]
+			);
+			$property_types[] = $result['property_type']['id'];
+		}
+
 		Property::updateOrCreate(
 			['uuid' => $result['uuid']],
 			$result->only([
