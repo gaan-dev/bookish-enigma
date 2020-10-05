@@ -4,7 +4,6 @@ require __DIR__.'/bootstrap/app.php';
 
 use App\Models\Property;
 use App\Models\PropertyType;
-
 use App\Models\Api;
 
 $api = new Api();

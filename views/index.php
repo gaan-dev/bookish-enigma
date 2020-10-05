@@ -101,6 +101,10 @@
 	  		</div>
 		</form>
   		<div class="row">
+  			<div class="col-md-12 d-flex justify-content-between mb-3">
+  				<a <?= (($page-1) >= 1) ? "href=\"{$prev}\"" : '' ?> class="btn  <?= (($page-1) == 0) ? 'btn-light':  'btn-primary' ?>">Prev</a>
+  				<a href="<?= $next ?>" class="btn btn-primary">Next</a>
+  			</div>
   			<div class="col-md-12 mx-auto">
   				<table class="table table-striped">
   					<tbody>
@@ -131,6 +135,8 @@
 						<?php }?>
   					</tbody>
   				</table>
+	  		</div>
+	  		<div class="col-md-12">
 	  		</div>
   		</div>
   	</div>

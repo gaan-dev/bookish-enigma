@@ -1,7 +1,16 @@
 <?php
 
+use App\Models\Property;
+use App\Models\PropertyType;
+
 $router->get('/', function(){
 	$filters = collect($_GET)->only(['name', 'bedrooms', 'price', 'property_type', 'type'])->toArray();
+
+	$page = isset($_GET['page']) ? $_GET['page'] : 1;
+	$limit = isset($_GET['limit']) ? $_GET['limit'] : 2;
+	$prev = '?page=' . ($page - 1);
+	$next = '?page=' . ($page + 1);
+
 	$query = \App\Models\Property::with('property_type');
 	foreach($filters as $field=>$item){
 		if(!$item){
@@ -22,21 +31,22 @@ $router->get('/', function(){
 				break;
 		}
 	}
-	$properties = $query->limit(100)->get();
-	$property_types = \App\Models\PropertyType::all();
+	$properties = $query->limit($limit)->offset(($page - 1) * $limit)->get();
+
+	$property_types = PropertyType::all();
 	$token = $_SESSION['token'];
 	require __DIR__.'/../views/index.php';
 });
 
 $router->get('/properties/create', function(){
-	$property_types = \App\Models\PropertyType::all();
+	$property_types = PropertyType::all();
 	$token = $_SESSION['token'];
 	require __DIR__.'/../views/create.php';
 });
 
 $router->get('/properties/(\d+)', function($propertyId) {
-	$property = \App\Models\Property::with('property_type')->find($propertyId);
-	$property_types = \App\Models\PropertyType::all();
+	$property = Property::with('property_type')->find($propertyId);
+	$property_types = PropertyType::all();
 	$token = $_SESSION['token'];
 	require __DIR__.'/../views/show.php';
 });
@@ -56,7 +66,7 @@ $router->post('/properties', function(){
 			'type'
 		])->toArray(), ['image_full' => $path, 'image_thumbnail' => $path]);
 
-		$property = \App\Models\Property::create($payload);
+		$property = Property::create($payload);
 
 		$property->update(sanitize($payload));
 		return redirect("/properties/{$property->id}");
@@ -65,7 +75,7 @@ $router->post('/properties', function(){
 
 $router->post('/properties/(\d+)', function($propertyId) {
 	if(verifyCsrf()){
-		$property = \App\Models\Property::find($propertyId);
+		$property = Property::find($propertyId);
 
 		$path = $property->image_full;
 		if($_FILES['image']['size']){
@@ -87,7 +97,7 @@ $router->post('/properties/(\d+)', function($propertyId) {
 
 $router->post('/properties/(\d+)/delete', function($propertyId){
 	if(verifyCsrf()){
-		\App\Models\Property::find($propertyId)->delete();
+		Property::find($propertyId)->delete();
 		return header("Location: /");
 	}else{
 		echo "failed csrf";
