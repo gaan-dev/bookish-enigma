@@ -72,7 +72,7 @@
 	  					<select class="form-control" name="property_type">
 	  						<option default></option>
 	  						<?php foreach($property_types as $type) : ?>
-	  							<option value="<?= $type->id ?>"><?= $type->title ?></option>
+	  							<option value="<?= htmlspecialchars($type->id) ?>"><?= htmlspecialchars($type->title) ?></option>
 	  						<?php endforeach ?>
 	  					</select>
 	  				</div>
@@ -102,8 +102,8 @@
 		</form>
   		<div class="row">
   			<div class="col-md-12 d-flex justify-content-between mb-3">
-  				<a href="<?= ($has_prev) ? $prev : '' ?>" class="btn  <?= $has_prev ? 'btn-primary':  'btn-light' ?>">Prev</a>
-  				<a href="<?= ($has_next) ? $next : '' ?>" class="btn  <?= $has_next ? 'btn-primary' : 'btn-light' ?>">Next</a>
+  				<a href="<?= ($has_prev) ? htmlspecialchars($prev) : '' ?>" class="btn  <?= $has_prev ? 'btn-primary':  'btn-light' ?>">Prev</a>
+  				<a href="<?= ($has_next) ? htmlspecialchars($next) : '' ?>" class="btn  <?= $has_next ? 'btn-primary' : 'btn-light' ?>">Next</a>
   			</div>
   			<div class="col-md-12 mx-auto">
   				<table class="table table-striped">
