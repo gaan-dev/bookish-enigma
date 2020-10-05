@@ -8,6 +8,14 @@ In the end I decided to roll my own, using some of the techniques I'd picked up 
 
 Clone it down, run `composer install` set up your server to point towards `public/index.php` (Valet will do this automatically);
 
+# Update 17:29 05/10/2020
+
+I've since updated to reflect feedback, which in hindsight I should have done on a seperate branch. To get to the last "official" version I submitted, please checkout `11144287f24a07989e50d8f241e191b86693fcff` via
+
+`git checkout 11144287f24a07989e50d8f241e191b86693fcff`
+
+---------------
+
 Copy the .env.example file into .env
 
 ```cp .env.example .env```
