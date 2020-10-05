@@ -68,7 +68,7 @@ function storeFile($file){
 
 function sanitize($payload){
 	foreach($payload as $key=>$value){
-		$value = stripslashes(htmlspecialchars($value));
+		$value = stripslashes($value);
 	}
 	return $payload;
 }
