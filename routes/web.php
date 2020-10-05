@@ -5,7 +5,6 @@ use App\Models\PropertyType;
 
 $router->get('/', function(){
 	$filters = collect($_GET)->only(['name', 'bedrooms', 'price', 'property_type', 'type'])->toArray();
-
 	$page = isset($_GET['page']) ? $_GET['page'] : 1;
 	$limit = isset($_GET['limit']) ? $_GET['limit'] : 15;
 	$prev = '?page=' . ($page - 1);
@@ -59,54 +58,54 @@ $router->get('/properties/(\d+)', function($propertyId) {
 });
 
 $router->post('/properties', function(){
-	if(verifyCsrf()){
-		$path = null;
-		if($_FILES['image']['size']){
-			$path = storeFile($_FILES['image']);
-		}else{
-			die('Whoops we forgot a file upload!');
-		}
-
-		$payload = array_merge(collect($_POST)->only([
-			'county', 'country', 'town','description','address',
-			'num_bedrooms','num_bathrooms','price','property_type_id',
-			'type'
-		])->toArray(), ['image_full' => $path, 'image_thumbnail' => $path]);
-
-		$property = Property::create($payload);
-
-		$property->update(sanitize($payload));
-		return redirect("/properties/{$property->id}");
+	if(!verifyCsrf()){
+		echo 'failed csrf';
 	}
+	$path = null;
+	if($_FILES['image']['size']){
+		$path = storeFile($_FILES['image']);
+	}else{
+		die('Whoops we forgot a file upload!');
+	}
+
+	$payload = array_merge(collect($_POST)->only([
+		'county', 'country', 'town','description','address',
+		'num_bedrooms','num_bathrooms','price','property_type_id',
+		'type'
+	])->toArray(), ['image_full' => $path, 'image_thumbnail' => $path]);
+
+	$property = Property::create($payload);
+
+	$property->update(sanitize($payload));
+	return redirect("/properties/{$property->id}");
 });
 
 $router->post('/properties/(\d+)', function($propertyId) {
-	if(verifyCsrf()){
-		$property = Property::find($propertyId);
-
-		$path = $property->image_full;
-		if($_FILES['image']['size']){
-			$path = storeFile($_FILES['image']);
-		}
-
-		$payload = array_merge(collect($_POST)->only([
-			'county', 'country', 'town','description','address',
-			'num_bedrooms','num_bathrooms','price','property_type_id',
-			'type'
-		])->toArray(), ['image_full' => $path, 'image_thumbnail' => $path]);
-
-		$property->update(sanitize($payload));
-		return redirect("/properties/{$property->id}");
-	}else{
-		echo "failed csrf";
+	if(!verifyCsrf()){
+		echo 'failed csrf';
 	}
+
+	$property = Property::find($propertyId);
+
+	$path = $property->image_full;
+	if($_FILES['image']['size']){
+		$path = storeFile($_FILES['image']);
+	}
+
+	$payload = array_merge(collect($_POST)->only([
+		'county', 'country', 'town','description','address',
+		'num_bedrooms','num_bathrooms','price','property_type_id',
+		'type'
+	])->toArray(), ['image_full' => $path, 'image_thumbnail' => $path]);
+
+	$property->update(sanitize($payload));
+	return redirect("/properties/{$property->id}");
 });
 
 $router->post('/properties/(\d+)/delete', function($propertyId){
-	if(verifyCsrf()){
-		Property::find($propertyId)->delete();
-		return header("Location: /");
-	}else{
-		echo "failed csrf";
+	if(!verifyCsrf()){
+		echo 'failed csrf';
 	}
+	Property::find($propertyId)->delete();
+	return header("Location: /");
 });
