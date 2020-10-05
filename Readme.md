@@ -36,4 +36,4 @@ Oh and the Latitude and Longitude are strings. Whoops. That was me being quite l
 
 Laravel is a massive crutch and I should probably make sure I reinforce my use of it by taking apart some of the "Magic" under the hood. I'd love to get a better grasp of how they handle DI and their IoC, my routes file is a massive mess because I couldn't be bothered to set up a proper controller system and just relied on some super basic router to try and handle it for me.
 
-This was a weird project for me. There were a lot of times where I literally had to throw my hands up and say "good enough" without going back and tidying properly. The `routes/web.php` file is a testament to this. It's hideous, but it honestly gets the job done.
+This was a weird project for me. There were a lot of times where I literally had to throw my hands up and say "good enough" without going back and tidying properly. The `routes/web.php` file is a testament to this. It's hideous, but it honestly gets the job done. That being said, I'm kinda expecting people to take a look at this, laugh and move on to the next.
