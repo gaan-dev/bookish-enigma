@@ -6,7 +6,7 @@ In the end I decided to roll my own, using some of the techniques I'd picked up 
 
 ## Installation
 
-Clone it down, set up your server to point towards `public/index.php` (Valet will do this automatically);
+Clone it down, run `composer install` set up your server to point towards `public/index.php` (Valet will do this automatically);
 
 Copy the .env.example file into .env
 
