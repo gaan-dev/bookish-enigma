@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require __DIR__.'/../vendor/autoload.php';
 
@@ -17,8 +20,8 @@ $capsule->addConnection([
     'database'  => $_ENV['DB_DATABASE'],
     'username'  => $_ENV['DB_USER'],
     'password'  => $_ENV['DB_PASSWORD'],
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
+    'charset'   => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
     'prefix'    => '',
 ]);
 

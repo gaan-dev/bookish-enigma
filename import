@@ -5,8 +5,29 @@ require __DIR__.'/bootstrap/app.php';
 use App\Models\Property;
 use App\Models\PropertyType;
 
-// Maybe we can do something cool with Guzzle and the CLI, where we only process a certain number of pages? Just to reduce load on API.
+use App\Models\Api;
 
-// We also want ot bring in .env file
+$api = new Api();
 
-die($_ENV['API_KEY']);
+$i = 0;
+while($api->nextPageExists()){
+	foreach($api->next()->results() as $result){
+		$result = collect($result);
+		PropertyType::updateOrCreate(
+			['id' => $result['property_type']['id']],
+			[
+				'title' => $result['property_type']['title'],
+				'description' => $result['property_type']['description']
+			]
+		);
+		Property::updateOrCreate(
+			['uuid' => $result['uuid']],
+			$result->only([
+				'county', 'country', 'town', 'description', 'address',
+				'image_full', 'image_thumbnail', 'latitude', 'longitude',
+				'num_bedrooms', 'num_bathrooms', 'price', 'property_type_id',
+				'type'
+			])->toArray()
+		);
+	}
+}

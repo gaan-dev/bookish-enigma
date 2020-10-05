@@ -4,25 +4,6 @@ require __DIR__.'/bootstrap/app.php';
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-Capsule::schema()->create('properties', function ($table) {
-    $table->increments('id');
-    $table->string('uuid');
-    $table->string('county');
-    $table->string('town');
-    $table->text('description');
-    $table->text('displayable_address');
-    $table->string('image_url');
-    $table->string('thumbnail_url');
-    $table->string('latitude');
-    $table->string('longitude');
-    $table->integer('number_of_bedrooms');
-    $table->integer('number_of__bathrooms');
-    $table->unsignedInteger('price');
-    $table->unsignedInteger('property_type_id');
-    $table->boolean('selling');
-    $table->timestamps();
-});
-
 Capsule::schema()->create('property_types', function ($table) {
     $table->unsignedInteger('id')->unique();
     $table->string('title');
@@ -30,3 +11,26 @@ Capsule::schema()->create('property_types', function ($table) {
     $table->timestamps();
 });
 
+Capsule::schema()->create('properties', function ($table) {
+    $table->increments('id');
+    $table->string('uuid')->nullable()->default(null);
+    $table->string('county');
+    $table->string('country');
+    $table->string('town');
+    $table->text('description');
+    $table->text('address');
+    $table->string('image_full');
+    $table->string('image_thumbnail');
+    $table->string('latitude')->nullable()->default(null);
+    $table->string('longitude')->nullable()->default(null);
+    $table->integer('num_bedrooms');
+    $table->integer('num_bathrooms');
+    $table->unsignedInteger('price');
+    $table->unsignedInteger('property_type_id');
+    $table->string('type');
+    $table->index('num_bedrooms');
+    $table->index('price');
+    $table->foreign('property_type_id')->references('id')->on('property_types');
+    $table->index('type');
+    $table->timestamps();
+});
